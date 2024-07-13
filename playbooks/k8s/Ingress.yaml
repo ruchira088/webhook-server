@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webhook-server-ingress
+  namespace: {{ namespace }}
+spec:
+  tls:
+    - secretName: webhook-server-tls
+      hosts:
+        - {{ hostname }}
+  rules:
+    - host: {{ hostname }}
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: webhook-server-service
+                port:
+                  name: javalin-port
