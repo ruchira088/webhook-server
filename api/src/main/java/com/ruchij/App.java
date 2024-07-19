@@ -12,6 +12,8 @@ import io.javalin.json.JavalinJackson;
 import java.io.IOException;
 import java.time.Clock;
 import java.util.Properties;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class App {
     public static void main(String[] args) throws IOException {
@@ -37,7 +39,7 @@ public class App {
     private static Routes routes(ApplicationConfiguration applicationConfiguration, Properties properties, Clock clock)
         throws IOException {
         HealthServiceImpl healthService = HealthServiceImpl.create(clock, properties);
-
-        return new Routes(healthService);
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        return new Routes(healthService, scheduledExecutorService, clock);
     }
 }
