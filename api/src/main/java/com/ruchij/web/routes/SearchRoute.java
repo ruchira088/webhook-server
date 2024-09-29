@@ -23,7 +23,9 @@ public class SearchRoute implements EndpointGroup {
 
             InputStream inputStream = classLoader.getResourceAsStream("data/" + searchTerm + ".json");
             if (inputStream != null) {
-                context.result(inputStream);
+                context
+                        .header("Content-Type", "application/json")
+                        .result(inputStream.readAllBytes());
             } else {
                 context
                         .status(404)
